@@ -11,10 +11,7 @@ pub struct WrappedMassaDB(pub MassaDB);
 
 impl WrappedMassaDB {
     /// Returns a new `MassaDB` instance
-    pub fn new(
-        config: MassaDBConfig,
-        create_if_missing: bool,
-    ) -> Self {
+    pub fn new(config: MassaDBConfig, create_if_missing: bool) -> Self {
         let mut db_opts = Options::default();
 
         // Note: no need to create anything (it can even be misleading if we specify the wrong path)
@@ -30,8 +27,9 @@ impl WrappedMassaDB {
                 ColumnFamilyDescriptor::new(STATE_CF, Options::default()),
                 ColumnFamilyDescriptor::new(METADATA_CF, Options::default()),
                 ColumnFamilyDescriptor::new(VERSIONING_CF, Options::default()),
-            ]
-        ).expect(OPEN_ERROR);
+            ],
+        )
+        .expect(OPEN_ERROR);
 
         let db = Arc::new(db);
         let current_batch = Arc::new(Mutex::new(WriteBatch::default()));
